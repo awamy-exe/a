@@ -479,7 +479,7 @@ function openDetailModal(id) {
                 <button class="btn-primary" onclick="closeDetailModal(); editPet('${pet.id}')">
                     <span class="btn-icon">✏️</span> Editar
                 </button>
-                <button class="btn-secondary" onclick="requestDeletePet('${pet.id}')" style="border-color: rgba(194,126,115,0.3); color: #c27e73;">
+                <button class="btn-secondary" onclick="requestDeletePet('${pet.id}')" style="border-color: rgba(200,125,135,0.4); color: #C87D87;">
                     <span class="btn-icon">🗑️</span> Excluir
                 </button>
             </div>

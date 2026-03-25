@@ -3,33 +3,34 @@
    ============================================ */
 
 :root {
-    /* Colors — Botanical Palette */
-    --bg-primary: #071f17;
-    --bg-secondary: #0A3323;
-    --bg-card: rgba(10, 51, 35, 0.7);
-    --bg-card-hover: rgba(16, 66, 46, 0.85);
-    --bg-glass: rgba(247, 244, 213, 0.05);
-    --bg-modal: rgba(7, 31, 23, 0.97);
+    /* Colors — Floral Light Palette */
+    --bg-primary: #FBEAD6; /* Champagne */
+    --bg-secondary: #E5BCA9; /* Bisque */
+    --bg-card: rgba(255, 255, 255, 0.6);
+    --bg-card-hover: rgba(255, 255, 255, 0.9);
+    --bg-glass: rgba(255, 255, 255, 0.5);
+    --bg-modal: rgba(251, 234, 214, 0.97); /* Champagne */
 
-    --accent-1: #839958;
-    --accent-2: #D3968C;
-    --accent-3: #105666;
-    --accent-4: #F7F4D5;
-    --gradient-main: linear-gradient(135deg, #839958, #6b8a3f, #105666);
-    --gradient-card: linear-gradient(145deg, rgba(131, 153, 88, 0.1), rgba(16, 86, 102, 0.05));
-    --gradient-warm: linear-gradient(135deg, #D3968C, #c27e73, #839958);
+    --accent-1: #6B7556; /* Dried Thyme */
+    --accent-2: #C87D87; /* Antique Rose */
+    --accent-3: #F0C4CB; /* Blush */
+    --accent-4: #E5BCA9; /* Bisque */
+    
+    --gradient-main: linear-gradient(135deg, #6B7556, #8b9971, #6B7556);
+    --gradient-card: linear-gradient(145deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3));
+    --gradient-warm: linear-gradient(135deg, #C87D87, #E5BCA9, #F0C4CB);
 
-    --text-primary: #F7F4D5;
-    --text-secondary: #b8c4a0;
-    --text-muted: #7a8c62;
+    --text-primary: #3d4a30; /* Dark version of Thyme */
+    --text-secondary: #6B7556; /* Dried Thyme */
+    --text-muted: #85897c;
 
-    --border-subtle: rgba(131, 153, 88, 0.12);
-    --border-accent: rgba(131, 153, 88, 0.35);
+    --border-subtle: rgba(107, 117, 86, 0.15); /* Thyme opacity */
+    --border-accent: rgba(200, 125, 135, 0.4); /* Antique Rose opacity */
 
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.5);
-    --shadow-glow: 0 0 40px rgba(131, 153, 88, 0.15);
+    --shadow-sm: 0 2px 8px rgba(107, 117, 86, 0.08);
+    --shadow-md: 0 8px 32px rgba(107, 117, 86, 0.12);
+    --shadow-lg: 0 16px 64px rgba(107, 117, 86, 0.18);
+    --shadow-glow: 0 0 40px rgba(200, 125, 135, 0.25);
 
     --radius-sm: 8px;
     --radius-md: 12px;
@@ -123,7 +124,7 @@ body {
     z-index: 100;
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    background: rgba(7, 31, 23, 0.8);
+    background: rgba(251, 234, 214, 0.85);
     border-bottom: 1px solid var(--border-subtle);
 }
 
@@ -216,7 +217,7 @@ body {
     transform: translateX(-50%);
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(131, 153, 88, 0.12) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(200, 125, 135, 0.15) 0%, transparent 70%);
     pointer-events: none;
 }
 
@@ -288,7 +289,7 @@ body {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(131, 153, 88, 0.4);
+    box-shadow: 0 8px 30px rgba(107, 117, 86, 0.3);
 }
 
 .btn-primary:hover::before {
@@ -344,15 +345,15 @@ body {
 }
 
 .btn-edit:hover {
-    background: rgba(131, 153, 88, 0.15);
+    background: rgba(107, 117, 86, 0.15);
 }
 
 .btn-delete {
-    color: #c27e73;
+    color: #C87D87;
 }
 
 .btn-delete:hover {
-    background: rgba(194, 126, 115, 0.15);
+    background: rgba(200, 125, 135, 0.15);
 }
 
 /* ============================================
@@ -379,7 +380,7 @@ body {
 
 .search-bar:focus-within {
     border-color: var(--accent-1);
-    box-shadow: 0 0 20px rgba(131, 153, 88, 0.15);
+    box-shadow: 0 0 20px rgba(107, 117, 86, 0.15);
 }
 
 .search-icon {
@@ -436,7 +437,7 @@ body {
 .chip.active {
     background: var(--gradient-main);
     border-color: transparent;
-    color: white;
+    color: #FBEAD6;
 }
 
 .pets-grid-section {
@@ -518,13 +519,13 @@ body {
     position: absolute;
     top: 12px;
     right: 12px;
-    background: rgba(7, 31, 23, 0.7);
+    background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(8px);
     border: 1px solid var(--border-subtle);
     padding: 6px 12px;
     border-radius: var(--radius-full);
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 600;
     color: var(--text-primary);
 }
 
@@ -589,7 +590,7 @@ body {
 }
 
 .pet-card-actions .btn-icon-sm {
-    background: rgba(7, 31, 23, 0.75);
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(8px);
     border: 1px solid var(--border-subtle);
 }
@@ -709,8 +710,8 @@ body {
 
 .modal-close:hover {
     background: rgba(239, 68, 68, 0.15);
-    color: #c27e73;
-    border-color: rgba(194, 126, 115, 0.3);
+    color: #C87D87;
+    border-color: rgba(200, 125, 135, 0.3);
 }
 
 .modal-body {
@@ -743,7 +744,7 @@ body {
 
 .photo-upload-area:hover {
     border-color: var(--accent-1);
-    background: rgba(131, 153, 88, 0.08);
+    background: rgba(107, 117, 86, 0.08);
 }
 
 .photo-preview {
@@ -976,7 +977,7 @@ body {
     color: white;
     font-size: 28px;
     cursor: pointer;
-    box-shadow: 0 6px 24px rgba(131, 153, 88, 0.4);
+    box-shadow: 0 6px 24px rgba(107, 117, 86, 0.3);
     transition: var(--transition);
     z-index: 99;
     display: flex;
@@ -986,7 +987,7 @@ body {
 
 .fab:hover {
     transform: scale(1.1) rotate(90deg);
-    box-shadow: 0 8px 32px rgba(131, 153, 88, 0.6);
+    box-shadow: 0 8px 32px rgba(107, 117, 86, 0.4);
 }
 
 .fab:active {
@@ -1046,7 +1047,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background: linear-gradient(135deg, #c27e73, #a86558);
+    background: linear-gradient(135deg, #C87D87, #b26872);
     color: white;
     border: none;
     padding: 12px 24px;
@@ -1060,7 +1061,7 @@ body {
 
 .btn-danger:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(194, 126, 115, 0.4);
+    box-shadow: 0 8px 30px rgba(200, 125, 135, 0.4);
 }
 
 .toast-container {
@@ -1094,7 +1095,7 @@ body {
 }
 
 .toast.error {
-    border-left: 3px solid #c27e73;
+    border-left: 3px solid #C87D87;
 }
 
 .toast.info {
