@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PetBook - Cadastre e gerencie seus bichinhos de estimação com fotos, dados e muito amor!">
+    <title>🐾 PetBook - Seus Bichinhos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Animated Background Particles -->
+    <div class="bg-particles" id="bgParticles"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🐾</span>
+                <h1>PetBook</h1>
+                <span class="logo-tagline">Seus bichinhos em um só lugar</span>
+            </div>
+            <div class="header-stats">
+                <div class="stat-chip">
+                    <span class="stat-icon">🐕</span>
+                    <span id="totalPets">0</span> pets
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="heroSection">
+        <div class="hero-content">
+            <h2 class="hero-title">Cadastre seus <span class="gradient-text">bichinhos</span> 🐾</h2>
+            <p class="hero-subtitle">Guarde as fotos, datas e informações dos seus pets favoritos</p>
+            <button class="btn-primary btn-hero" onclick="openModal()">
+                <span class="btn-icon">➕</span>
+                Adicionar Pet
+            </button>
+        </div>
+    </section>
+
+    <!-- Search & Filters -->
+    <section class="filters-section" id="filtersSection">
+        <div class="container">
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Buscar pet pelo nome..." oninput="filterPets()">
+            </div>
+            <div class="filter-chips">
+                <button class="chip active" data-filter="all" onclick="setFilter('all', this)">Todos</button>
+                <button class="chip" data-filter="cachorro" onclick="setFilter('cachorro', this)">🐕 Cães</button>
+                <button class="chip" data-filter="gato" onclick="setFilter('gato', this)">🐈 Gatos</button>
+                <button class="chip" data-filter="ave" onclick="setFilter('ave', this)">🦜 Aves</button>
+                <button class="chip" data-filter="roedor" onclick="setFilter('roedor', this)">🐹 Roedores</button>
+                <button class="chip" data-filter="outro" onclick="setFilter('outro', this)">🐾 Outros</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pets Grid -->
+    <main class="pets-grid-section">
+        <div class="container">
+            <div class="pets-grid" id="petsGrid">
+                <!-- Pet cards will be rendered here -->
+            </div>
+            <div class="empty-state" id="emptyState">
+                <div class="empty-illustration">🐾</div>
+                <h3>Nenhum pet cadastrado ainda</h3>
+                <p>Clique no botão abaixo para adicionar seu primeiro bichinho!</p>
+                <button class="btn-primary" onclick="openModal()">
+                    <span class="btn-icon">➕</span>
+                    Adicionar meu primeiro pet
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Action Button -->
+    <button class="fab" onclick="openModal()" title="Adicionar Pet">
+        <span>+</span>
+    </button>
+
+    <!-- Modal: Add/Edit Pet -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModalOverlay(event)">
+        <div class="modal" id="petModal">
+            <div class="modal-header">
+                <h2 id="modalTitle">Novo Pet 🐾</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="petForm" onsubmit="savePet(event)">
+                <div class="modal-body">
+                    <!-- Photo Upload -->
+                    <div class="photo-upload-area" id="photoUploadArea" onclick="document.getElementById('petPhoto').click()">
+                        <input type="file" id="petPhoto" accept="image/*" onchange="previewPhoto(event)" hidden>
+                        <div class="photo-preview" id="photoPreview">
+                            <span class="upload-icon">📷</span>
+                            <span class="upload-text">Clique para adicionar foto</span>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <!-- Nome -->
+                        <div class="form-group full-width">
+                            <label for="petName">
+                                <span class="label-icon">✏️</span> Nome do Pet
+                            </label>
+                            <input type="text" id="petName" placeholder="Ex: Rex, Mimi, Thor..." required>
+                        </div>
+
+                        <!-- Espécie -->
+                        <div class="form-group">
+                            <label for="petSpecies">
+                                <span class="label-icon">🐾</span> Espécie
+                            </label>
+                            <select id="petSpecies" required>
+                                <option value="">Selecione...</option>
+                                <option value="cachorro">🐕 Cachorro</option>
+                                <option value="gato">🐈 Gato</option>
+                                <option value="ave">🦜 Ave</option>
+                                <option value="roedor">🐹 Roedor</option>
+                                <option value="reptil">🦎 Réptil</option>
+                                <option value="peixe">🐠 Peixe</option>
+                                <option value="outro">🐾 Outro</option>
+                            </select>
+                        </div>
+
+                        <!-- Raça -->
+                        <div class="form-group">
+                            <label for="petBreed">
+                                <span class="label-icon">🏷️</span> Raça
+                            </label>
+                            <input type="text" id="petBreed" placeholder="Ex: Labrador, Siamês...">
+                        </div>
+
+                        <!-- Data de Nascimento -->
+                        <div class="form-group">
+                            <label for="petBirthdate">
+                                <span class="label-icon">🎂</span> Data de Nascimento
+                            </label>
+                            <input type="date" id="petBirthdate">
+                        </div>
+
+                        <!-- Sexo -->
+                        <div class="form-group">
+                            <label for="petGender">
+                                <span class="label-icon">⚧</span> Sexo
+                            </label>
+                            <select id="petGender">
+                                <option value="">Selecione...</option>
+                                <option value="macho">♂️ Macho</option>
+                                <option value="femea">♀️ Fêmea</option>
+                            </select>
+                        </div>
+
+                        <!-- Cor -->
+                        <div class="form-group">
+                            <label for="petColor">
+                                <span class="label-icon">🎨</span> Cor / Pelagem
+                            </label>
+                            <input type="text" id="petColor" placeholder="Ex: Caramelo, Preto e branco...">
+                        </div>
+
+                        <!-- Peso -->
+                        <div class="form-group">
+                            <label for="petWeight">
+                                <span class="label-icon">⚖️</span> Peso (kg)
+                            </label>
+                            <input type="number" id="petWeight" step="0.1" min="0" placeholder="Ex: 5.2">
+                        </div>
+
+                        <!-- Tamanho -->
+                        <div class="form-group">
+                            <label for="petSize">
+                                <span class="label-icon">📏</span> Tamanho
+                            </label>
+                            <select id="petSize">
+                                <option value="">Selecione...</option>
+                                <option value="mini">Mini (até 5kg)</option>
+                                <option value="pequeno">Pequeno (5-10kg)</option>
+                                <option value="medio">Médio (10-25kg)</option>
+                                <option value="grande">Grande (25-45kg)</option>
+                                <option value="gigante">Gigante (+45kg)</option>
+                            </select>
+                        </div>
+
+                        <!-- Observações -->
+                        <div class="form-group full-width">
+                            <label for="petNotes">
+                                <span class="label-icon">📝</span> Observações
+                            </label>
+                            <textarea id="petNotes" rows="3" placeholder="Alguma informação especial? Alergias, vacinas, personalidade..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="btn-primary">
+                        <span class="btn-icon">💾</span>
+                        <span id="btnSaveText">Salvar Pet</span>
+                    </button>
+                </div>
+                <input type="hidden" id="editingPetId" value="">
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Pet Details -->
+    <div class="modal-overlay" id="detailModalOverlay" onclick="closeDetailModalOverlay(event)">
+        <div class="modal modal-detail" id="detailModal">
+            <button class="modal-close detail-close" onclick="closeDetailModal()">&times;</button>
+            <div id="detailContent">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <footer class="footer">
+        <p>Feito com 💜 por <strong>awamy-exe</strong> &middot; PetBook 2026</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
