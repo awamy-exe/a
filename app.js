@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ---- Background ----
 function createParticles() {
     const container = document.getElementById('bgParticles');
-    const emojis = ['🐾', '💜', '⭐', '✨', '🐕', '🐈', '🦜'];
+    const emojis = ['🐾', '🌿', '🍃', '✨', '🌸', '🌱', '🪴'];
 
     for (let i = 0; i < 20; i++) {
         const particle = document.createElement('div');
@@ -479,7 +479,7 @@ function openDetailModal(id) {
                 <button class="btn-primary" onclick="closeDetailModal(); editPet('${pet.id}')">
                     <span class="btn-icon">✏️</span> Editar
                 </button>
-                <button class="btn-secondary" onclick="requestDeletePet('${pet.id}')" style="border-color: rgba(239,68,68,0.3); color: #ef4444;">
+                <button class="btn-secondary" onclick="requestDeletePet('${pet.id}')" style="border-color: rgba(194,126,115,0.3); color: #c27e73;">
                     <span class="btn-icon">🗑️</span> Excluir
                 </button>
             </div>
