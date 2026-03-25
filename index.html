@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="PetBook - Cadastre e gerencie seus bichinhos de estimação com fotos, dados e muito amor!">
+    <meta name="description"
+        content="PetBook - Cadastre e gerencie seus bichinhos de estimação com fotos, dados e muito amor!">
     <title>🐾 PetBook - Seus Bichinhos</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <!-- Animated Background Particles -->
     <div class="bg-particles" id="bgParticles"></div>
@@ -34,7 +39,7 @@
     <section class="hero" id="heroSection">
         <div class="hero-content">
             <h2 class="hero-title">Cadastre seus <span class="gradient-text">bichinhos</span> 🐾</h2>
-            <p class="hero-subtitle">Guarde as fotos, datas e informações dos seus pets favoritos</p>
+            <p class="hero-subtitle">Guarde as fotos, datas e informações dos seus pets</p>
             <button class="btn-primary btn-hero" onclick="openModal()">
                 <span class="btn-icon">➕</span>
                 Adicionar Pet
@@ -93,11 +98,13 @@
             <form id="petForm" onsubmit="savePet(event)">
                 <div class="modal-body">
                     <!-- Photo Upload -->
-                    <div class="photo-upload-area" id="photoUploadArea" onclick="document.getElementById('petPhoto').click()">
-                        <input type="file" id="petPhoto" accept="image/*" onchange="previewPhoto(event)" hidden>
+                    <div class="photo-upload-area" id="photoUploadArea"
+                        onclick="document.getElementById('petPhoto').click()">
+                        <input type="file" id="petPhoto" accept="image/*,.heic,.heif" onchange="previewPhoto(event)" hidden>
                         <div class="photo-preview" id="photoPreview">
                             <span class="upload-icon">📷</span>
                             <span class="upload-text">Clique para adicionar foto</span>
+                            <span class="upload-hint">Aceita JPEG, PNG, HEIC e outros</span>
                         </div>
                     </div>
 
@@ -191,7 +198,8 @@
                             <label for="petNotes">
                                 <span class="label-icon">📝</span> Observações
                             </label>
-                            <textarea id="petNotes" rows="3" placeholder="Alguma informação especial? Alergias, vacinas, personalidade..."></textarea>
+                            <textarea id="petNotes" rows="3"
+                                placeholder="Alguma informação especial? Alergias, vacinas, personalidade..."></textarea>
                         </div>
                     </div>
                 </div>
@@ -224,6 +232,8 @@
         <p>Feito com 💜 por <strong>awamy-exe</strong> &middot; PetBook 2026</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
     <script src="app.js"></script>
 </body>
+
 </html>

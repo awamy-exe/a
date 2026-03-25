@@ -1,13 +1,13 @@
 /* ============================================
-   PetBook - Application Logic
+   PetBook - Lógica da Aplicação
    ============================================ */
 
-// ---- State ----
+// ---- Estado ----
 let pets = JSON.parse(localStorage.getItem('petbook_pets') || '[]');
 let currentFilter = 'all';
 let currentSearch = '';
 
-// ---- Species Config ----
+// ---- Espécies ----
 const speciesEmoji = {
     cachorro: '🐕',
     gato: '🐈',
@@ -53,11 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
     updateStats();
 });
 
-// ---- Background Particles ----
+// ---- Background ----
 function createParticles() {
     const container = document.getElementById('bgParticles');
     const emojis = ['🐾', '💜', '⭐', '✨', '🐕', '🐈', '🦜'];
-    
+
     for (let i = 0; i < 20; i++) {
         const particle = document.createElement('div');
         particle.classList.add('particle');
@@ -70,30 +70,30 @@ function createParticles() {
     }
 }
 
-// ---- Stats ----
+// ---- Status ----
 function updateStats() {
     document.getElementById('totalPets').textContent = pets.length;
 }
 
-// ---- Age Calculator ----
+// ---- Calculadora de Idade ----
 function calculateAge(birthdate) {
     if (!birthdate) return null;
-    
+
     const birth = new Date(birthdate);
     const today = new Date();
-    
+
     let years = today.getFullYear() - birth.getFullYear();
     let months = today.getMonth() - birth.getMonth();
-    
+
     if (months < 0 || (months === 0 && today.getDate() < birth.getDate())) {
         years--;
         months += 12;
     }
-    
+
     if (today.getDate() < birth.getDate()) {
         months--;
     }
-    
+
     if (years > 0) {
         return years === 1 ? '1 ano' : `${years} anos`;
     } else if (months > 0) {
@@ -111,24 +111,24 @@ function formatDate(dateStr) {
     return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
-// ---- Generate Unique ID ----
+// ---- Gerar ID Único ----
 function generateId() {
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 
-// ---- Render Pets ----
+// ---- Renderizar Pets ----
 function renderPets() {
     const grid = document.getElementById('petsGrid');
     const emptyState = document.getElementById('emptyState');
-    
+
     let filtered = pets;
-    
-    // Filter by species
+
+    // Filtrar por Espécies
     if (currentFilter !== 'all') {
         filtered = filtered.filter(p => p.species === currentFilter);
     }
-    
-    // Filter by search
+
+    // Filtrar por busca
     if (currentSearch) {
         const search = currentSearch.toLowerCase();
         filtered = filtered.filter(p =>
@@ -137,7 +137,7 @@ function renderPets() {
             (p.color && p.color.toLowerCase().includes(search))
         );
     }
-    
+
     if (filtered.length === 0) {
         grid.innerHTML = '';
         emptyState.classList.add('visible');
@@ -145,13 +145,13 @@ function renderPets() {
     } else {
         emptyState.classList.remove('visible');
         grid.style.display = 'grid';
-        
+
         grid.innerHTML = filtered.map((pet, index) => {
             const age = calculateAge(pet.birthdate);
             const emoji = speciesEmoji[pet.species] || '🐾';
             const speciesLabel = speciesLabels[pet.species] || pet.species;
             const genderIcon = pet.gender ? (genderIcons[pet.gender] || '') : '';
-            
+
             return `
                 <div class="pet-card" style="animation-delay: ${index * 0.08}s" onclick="openDetailModal('${pet.id}')">
                     <div class="pet-card-actions">
@@ -159,10 +159,10 @@ function renderPets() {
                         <button class="btn-icon-sm btn-delete" onclick="event.stopPropagation(); deletePet('${pet.id}')" title="Excluir">🗑️</button>
                     </div>
                     <div class="pet-card-image">
-                        ${pet.photo 
-                            ? `<img src="${pet.photo}" alt="${pet.name}" loading="lazy">` 
-                            : `<span class="pet-card-placeholder">${emoji}</span>`
-                        }
+                        ${pet.photo
+                    ? `<img src="${pet.photo}" alt="${pet.name}" loading="lazy">`
+                    : `<span class="pet-card-placeholder">${emoji}</span>`
+                }
                         <span class="pet-card-species-badge">${emoji} ${speciesLabel}</span>
                     </div>
                     <div class="pet-card-body">
@@ -182,11 +182,11 @@ function renderPets() {
             `;
         }).join('');
     }
-    
+
     updateStats();
 }
 
-// ---- Filters ----
+// ---- Filtros ----
 function setFilter(filter, btn) {
     currentFilter = filter;
     document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
@@ -199,21 +199,59 @@ function filterPets() {
     renderPets();
 }
 
-// ---- Photo Preview ----
-function previewPhoto(event) {
+// ---- Photo Preview (with HEIC support) ----
+function isHeicFile(file) {
+    const name = file.name.toLowerCase();
+    return name.endsWith('.heic') || name.endsWith('.heif') ||
+           file.type === 'image/heic' || file.type === 'image/heif';
+}
+
+async function previewPhoto(event) {
     const file = event.target.files[0];
     if (!file) return;
-    
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        const preview = document.getElementById('photoPreview');
-        // Compress the image before storing
-        compressImage(e.target.result, 600, 0.7, (compressed) => {
-            preview.innerHTML = `<img src="${compressed}" alt="Preview">`;
-            preview.dataset.src = compressed;
-        });
-    };
-    reader.readAsDataURL(file);
+
+    const preview = document.getElementById('photoPreview');
+
+    // Show loading state
+    preview.innerHTML = `
+        <span class="upload-icon">⏳</span>
+        <span class="upload-text">Processando imagem...</span>
+    `;
+
+    try {
+        let processedFile = file;
+
+        // Convert HEIC/HEIF to JPEG
+        if (isHeicFile(file)) {
+            showToast('Convertendo HEIC para JPEG...', 'info');
+            const convertedBlob = await heic2any({
+                blob: file,
+                toType: 'image/jpeg',
+                quality: 0.85
+            });
+            // heic2any may return an array of blobs for multi-image HEIC
+            processedFile = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            compressImage(e.target.result, 600, 0.7, (compressed) => {
+                preview.innerHTML = `<img src="${compressed}" alt="Preview">`;
+                preview.dataset.src = compressed;
+                if (isHeicFile(file)) {
+                    showToast('Foto HEIC convertida com sucesso! ✅', 'success');
+                }
+            });
+        };
+        reader.readAsDataURL(processedFile);
+    } catch (err) {
+        console.error('Erro ao processar imagem:', err);
+        preview.innerHTML = `
+            <span class="upload-icon">❌</span>
+            <span class="upload-text">Erro ao converter. Tente outro formato.</span>
+        `;
+        showToast('Erro ao converter imagem HEIC. Tente enviar em JPEG/PNG.', 'error');
+    }
 }
 
 function compressImage(dataUrl, maxWidth, quality, callback) {
@@ -222,12 +260,12 @@ function compressImage(dataUrl, maxWidth, quality, callback) {
         const canvas = document.createElement('canvas');
         let width = img.width;
         let height = img.height;
-        
+
         if (width > maxWidth) {
             height = (maxWidth / width) * height;
             width = maxWidth;
         }
-        
+
         canvas.width = width;
         canvas.height = height;
         const ctx = canvas.getContext('2d');
@@ -237,22 +275,23 @@ function compressImage(dataUrl, maxWidth, quality, callback) {
     img.src = dataUrl;
 }
 
-// ---- Modal Controls ----
+// ---- Modal ----
 function openModal(petId) {
     const overlay = document.getElementById('modalOverlay');
     const form = document.getElementById('petForm');
     const title = document.getElementById('modalTitle');
     const saveBtn = document.getElementById('btnSaveText');
     const preview = document.getElementById('photoPreview');
-    
+
     form.reset();
     document.getElementById('editingPetId').value = '';
     preview.innerHTML = `
         <span class="upload-icon">📷</span>
         <span class="upload-text">Clique para adicionar foto</span>
+        <span class="upload-hint">Aceita JPEG, PNG, HEIC e outros</span>
     `;
     preview.dataset.src = '';
-    
+
     if (petId) {
         const pet = pets.find(p => p.id === petId);
         if (pet) {
@@ -268,7 +307,7 @@ function openModal(petId) {
             document.getElementById('petWeight').value = pet.weight || '';
             document.getElementById('petSize').value = pet.size || '';
             document.getElementById('petNotes').value = pet.notes || '';
-            
+
             if (pet.photo) {
                 preview.innerHTML = `<img src="${pet.photo}" alt="Preview">`;
                 preview.dataset.src = pet.photo;
@@ -278,7 +317,7 @@ function openModal(petId) {
         title.textContent = 'Novo Pet 🐾';
         saveBtn.textContent = 'Salvar Pet';
     }
-    
+
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
 }
@@ -295,13 +334,13 @@ function closeModalOverlay(event) {
     }
 }
 
-// ---- Save Pet ----
+// ---- Salvar Pet ----
 function savePet(event) {
     event.preventDefault();
-    
+
     const editId = document.getElementById('editingPetId').value;
     const preview = document.getElementById('photoPreview');
-    
+
     const petData = {
         id: editId || generateId(),
         name: document.getElementById('petName').value.trim(),
@@ -317,7 +356,7 @@ function savePet(event) {
         createdAt: editId ? (pets.find(p => p.id === editId)?.createdAt || new Date().toISOString()) : new Date().toISOString(),
         updatedAt: new Date().toISOString()
     };
-    
+
     if (editId) {
         const index = pets.findIndex(p => p.id === editId);
         if (index !== -1) {
@@ -328,22 +367,22 @@ function savePet(event) {
         pets.unshift(petData);
         showToast(`${petData.name} foi adicionado! 🎉`, 'success');
     }
-    
+
     savePetsToStorage();
     renderPets();
     closeModal();
 }
 
-// ---- Edit Pet ----
+// ---- Editar Pet ----
 function editPet(id) {
     openModal(id);
 }
 
-// ---- Delete Pet ----
+// ---- Deletar Pet ----
 function deletePet(id) {
     const pet = pets.find(p => p.id === id);
     if (!pet) return;
-    
+
     if (confirm(`Tem certeza que deseja excluir ${pet.name}? 😢`)) {
         pets = pets.filter(p => p.id !== id);
         savePetsToStorage();
@@ -353,23 +392,23 @@ function deletePet(id) {
     }
 }
 
-// ---- Detail Modal ----
+// ---- Modal de Detalhes ----
 function openDetailModal(id) {
     const pet = pets.find(p => p.id === id);
     if (!pet) return;
-    
+
     const overlay = document.getElementById('detailModalOverlay');
     const content = document.getElementById('detailContent');
-    
+
     const age = calculateAge(pet.birthdate);
     const emoji = speciesEmoji[pet.species] || '🐾';
     const speciesLabel = speciesLabels[pet.species] || pet.species;
     const genderIcon = pet.gender ? (genderIcons[pet.gender] || '') : '';
     const genderLabel = pet.gender ? (genderLabels[pet.gender] || '') : '—';
-    
+
     content.innerHTML = `
-        ${pet.photo 
-            ? `<img class="detail-image" src="${pet.photo}" alt="${pet.name}">` 
+        ${pet.photo
+            ? `<img class="detail-image" src="${pet.photo}" alt="${pet.name}">`
             : `<div class="detail-placeholder">${emoji}</div>`
         }
         <div class="detail-body">
@@ -422,7 +461,7 @@ function openDetailModal(id) {
             </div>
         </div>
     `;
-    
+
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
 }
@@ -443,12 +482,12 @@ function closeDetailModalOverlay(event) {
 function showToast(message, type = 'info') {
     const container = document.getElementById('toastContainer');
     const icons = { success: '✅', error: '❌', info: 'ℹ️' };
-    
+
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
     toast.innerHTML = `<span>${icons[type] || 'ℹ️'}</span> ${message}`;
     container.appendChild(toast);
-    
+
     setTimeout(() => {
         toast.remove();
     }, 3200);
