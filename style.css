@@ -3,34 +3,33 @@
    ============================================ */
 
 :root {
-    /* Colors — Floral Light Palette */
-    --bg-primary: #FBEAD6; /* Champagne */
-    --bg-secondary: #E5BCA9; /* Bisque */
-    --bg-card: rgba(255, 255, 255, 0.6);
-    --bg-card-hover: rgba(255, 255, 255, 0.9);
-    --bg-glass: rgba(255, 255, 255, 0.5);
-    --bg-modal: rgba(251, 234, 214, 0.97); /* Champagne */
+    /* Colors */
+    --bg-primary: #0a0a1a;
+    --bg-secondary: #111128;
+    --bg-card: rgba(22, 22, 50, 0.7);
+    --bg-card-hover: rgba(30, 30, 70, 0.85);
+    --bg-glass: rgba(255, 255, 255, 0.04);
+    --bg-modal: rgba(18, 18, 40, 0.97);
 
-    --accent-1: #6B7556; /* Dried Thyme */
-    --accent-2: #C87D87; /* Antique Rose */
-    --accent-3: #F0C4CB; /* Blush */
-    --accent-4: #E5BCA9; /* Bisque */
-    
-    --gradient-main: linear-gradient(135deg, #6B7556, #8b9971, #6B7556);
-    --gradient-card: linear-gradient(145deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3));
-    --gradient-warm: linear-gradient(135deg, #C87D87, #E5BCA9, #F0C4CB);
+    --accent-1: #a855f7;
+    --accent-2: #6366f1;
+    --accent-3: #ec4899;
+    --accent-4: #14b8a6;
+    --gradient-main: linear-gradient(135deg, #a855f7, #6366f1, #ec4899);
+    --gradient-card: linear-gradient(145deg, rgba(168, 85, 247, 0.1), rgba(99, 102, 241, 0.05));
+    --gradient-warm: linear-gradient(135deg, #f59e0b, #ef4444, #ec4899);
 
-    --text-primary: #3d4a30; /* Dark version of Thyme */
-    --text-secondary: #6B7556; /* Dried Thyme */
-    --text-muted: #85897c;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
 
-    --border-subtle: rgba(107, 117, 86, 0.15); /* Thyme opacity */
-    --border-accent: rgba(200, 125, 135, 0.4); /* Antique Rose opacity */
+    --border-subtle: rgba(148, 163, 184, 0.08);
+    --border-accent: rgba(168, 85, 247, 0.3);
 
-    --shadow-sm: 0 2px 8px rgba(107, 117, 86, 0.08);
-    --shadow-md: 0 8px 32px rgba(107, 117, 86, 0.12);
-    --shadow-lg: 0 16px 64px rgba(107, 117, 86, 0.18);
-    --shadow-glow: 0 0 40px rgba(200, 125, 135, 0.25);
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.5);
+    --shadow-glow: 0 0 40px rgba(168, 85, 247, 0.15);
 
     --radius-sm: 8px;
     --radius-md: 12px;
@@ -124,7 +123,7 @@ body {
     z-index: 100;
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    background: rgba(251, 234, 214, 0.85);
+    background: rgba(10, 10, 26, 0.8);
     border-bottom: 1px solid var(--border-subtle);
 }
 
@@ -217,7 +216,7 @@ body {
     transform: translateX(-50%);
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(200, 125, 135, 0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);
     pointer-events: none;
 }
 
@@ -289,7 +288,7 @@ body {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(107, 117, 86, 0.3);
+    box-shadow: 0 8px 30px rgba(168, 85, 247, 0.4);
 }
 
 .btn-primary:hover::before {
@@ -345,15 +344,15 @@ body {
 }
 
 .btn-edit:hover {
-    background: rgba(107, 117, 86, 0.15);
+    background: rgba(99, 102, 241, 0.15);
 }
 
 .btn-delete {
-    color: #C87D87;
+    color: #ef4444;
 }
 
 .btn-delete:hover {
-    background: rgba(200, 125, 135, 0.15);
+    background: rgba(239, 68, 68, 0.15);
 }
 
 /* ============================================
@@ -380,7 +379,7 @@ body {
 
 .search-bar:focus-within {
     border-color: var(--accent-1);
-    box-shadow: 0 0 20px rgba(107, 117, 86, 0.15);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.1);
 }
 
 .search-icon {
@@ -437,7 +436,7 @@ body {
 .chip.active {
     background: var(--gradient-main);
     border-color: transparent;
-    color: #FBEAD6;
+    color: white;
 }
 
 .pets-grid-section {
@@ -519,13 +518,13 @@ body {
     position: absolute;
     top: 12px;
     right: 12px;
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(10, 10, 26, 0.7);
     backdrop-filter: blur(8px);
     border: 1px solid var(--border-subtle);
     padding: 6px 12px;
     border-radius: var(--radius-full);
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--text-primary);
 }
 
@@ -590,7 +589,7 @@ body {
 }
 
 .pet-card-actions .btn-icon-sm {
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(10, 10, 26, 0.75);
     backdrop-filter: blur(8px);
     border: 1px solid var(--border-subtle);
 }
@@ -710,8 +709,8 @@ body {
 
 .modal-close:hover {
     background: rgba(239, 68, 68, 0.15);
-    color: #C87D87;
-    border-color: rgba(200, 125, 135, 0.3);
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.3);
 }
 
 .modal-body {
@@ -744,7 +743,7 @@ body {
 
 .photo-upload-area:hover {
     border-color: var(--accent-1);
-    background: rgba(107, 117, 86, 0.08);
+    background: rgba(168, 85, 247, 0.08);
 }
 
 .photo-preview {
@@ -977,7 +976,7 @@ body {
     color: white;
     font-size: 28px;
     cursor: pointer;
-    box-shadow: 0 6px 24px rgba(107, 117, 86, 0.3);
+    box-shadow: 0 6px 24px rgba(168, 85, 247, 0.4);
     transition: var(--transition);
     z-index: 99;
     display: flex;
@@ -987,7 +986,7 @@ body {
 
 .fab:hover {
     transform: scale(1.1) rotate(90deg);
-    box-shadow: 0 8px 32px rgba(107, 117, 86, 0.4);
+    box-shadow: 0 8px 32px rgba(168, 85, 247, 0.6);
 }
 
 .fab:active {
@@ -1047,7 +1046,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background: linear-gradient(135deg, #C87D87, #b26872);
+    background: linear-gradient(135deg, #ef4444, #dc2626);
     color: white;
     border: none;
     padding: 12px 24px;
@@ -1061,7 +1060,7 @@ body {
 
 .btn-danger:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(200, 125, 135, 0.4);
+    box-shadow: 0 8px 30px rgba(239, 68, 68, 0.4);
 }
 
 .toast-container {
@@ -1091,11 +1090,11 @@ body {
 }
 
 .toast.success {
-    border-left: 3px solid var(--accent-1);
+    border-left: 3px solid var(--accent-4);
 }
 
 .toast.error {
-    border-left: 3px solid #C87D87;
+    border-left: 3px solid #ef4444;
 }
 
 .toast.info {
