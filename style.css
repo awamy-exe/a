@@ -579,10 +579,19 @@ body {
     gap: 6px;
     opacity: 0;
     transition: var(--transition);
+    z-index: 10;
+    pointer-events: none;
 }
 
 .pet-card:hover .pet-card-actions {
     opacity: 1;
+    pointer-events: auto;
+}
+
+.pet-card-actions .btn-icon-sm {
+    background: rgba(10, 10, 26, 0.75);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border-subtle);
 }
 
 
@@ -984,11 +993,81 @@ body {
     transform: scale(0.95);
 }
 
+/* ============================================
+   Confirm Dialog
+   ============================================ */
+.confirm-dialog {
+    background: var(--bg-modal);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: 32px;
+    text-align: center;
+    max-width: 380px;
+    width: 100%;
+    animation: cardAppear 0.3s ease;
+}
+
+.confirm-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.confirm-dialog h3 {
+    font-family: var(--font-main);
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.confirm-dialog p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 24px;
+}
+
+.confirm-dialog p strong {
+    color: var(--accent-1);
+}
+
+.confirm-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.confirm-actions .btn-secondary,
+.confirm-actions .btn-danger {
+    flex: 1;
+    justify-content: center;
+}
+
+.btn-danger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--radius-full);
+    font-family: var(--font-main);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(239, 68, 68, 0.4);
+}
+
 .toast-container {
     position: fixed;
     bottom: 100px;
     right: 30px;
-    z-index: 2000;
+    z-index: 3000;
     display: flex;
     flex-direction: column;
     gap: 10px;

@@ -156,7 +156,7 @@ function renderPets() {
                 <div class="pet-card" style="animation-delay: ${index * 0.08}s" onclick="openDetailModal('${pet.id}')">
                     <div class="pet-card-actions">
                         <button class="btn-icon-sm btn-edit" onclick="event.stopPropagation(); editPet('${pet.id}')" title="Editar">✏️</button>
-                        <button class="btn-icon-sm btn-delete" onclick="event.stopPropagation(); deletePet('${pet.id}')" title="Excluir">🗑️</button>
+                        <button class="btn-icon-sm btn-delete" onclick="event.stopPropagation(); requestDeletePet('${pet.id}')" title="Excluir">🗑️</button>
                     </div>
                     <div class="pet-card-image">
                         ${pet.photo
@@ -379,17 +379,41 @@ function editPet(id) {
 }
 
 // ---- Deletar Pet ----
-function deletePet(id) {
+let pendingDeleteId = null;
+
+function requestDeletePet(id) {
+    pendingDeleteId = id;
     const pet = pets.find(p => p.id === id);
     if (!pet) return;
 
-    if (confirm(`Tem certeza que deseja excluir ${pet.name}? 😢`)) {
-        pets = pets.filter(p => p.id !== id);
-        savePetsToStorage();
-        renderPets();
-        closeDetailModal();
-        showToast(`${pet.name} foi removido`, 'info');
-    }
+    // Show custom confirm dialog
+    const overlay = document.getElementById('confirmOverlay');
+    document.getElementById('confirmPetName').textContent = pet.name;
+    overlay.classList.add('active');
+}
+
+function confirmDelete() {
+    if (!pendingDeleteId) return;
+    const pet = pets.find(p => p.id === pendingDeleteId);
+    const petName = pet ? pet.name : 'Pet';
+    
+    pets = pets.filter(p => p.id !== pendingDeleteId);
+    pendingDeleteId = null;
+    savePetsToStorage();
+    renderPets();
+    closeConfirmDialog();
+    closeDetailModal();
+    showToast(`${petName} foi removido`, 'info');
+}
+
+function cancelDelete() {
+    pendingDeleteId = null;
+    closeConfirmDialog();
+}
+
+function closeConfirmDialog() {
+    const overlay = document.getElementById('confirmOverlay');
+    overlay.classList.remove('active');
 }
 
 // ---- Modal de Detalhes ----
@@ -455,7 +479,7 @@ function openDetailModal(id) {
                 <button class="btn-primary" onclick="closeDetailModal(); editPet('${pet.id}')">
                     <span class="btn-icon">✏️</span> Editar
                 </button>
-                <button class="btn-secondary" onclick="deletePet('${pet.id}')" style="border-color: rgba(239,68,68,0.3); color: #ef4444;">
+                <button class="btn-secondary" onclick="requestDeletePet('${pet.id}')" style="border-color: rgba(239,68,68,0.3); color: #ef4444;">
                     <span class="btn-icon">🗑️</span> Excluir
                 </button>
             </div>

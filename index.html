@@ -225,6 +225,21 @@
         </div>
     </div>
 
+    <!-- Confirm Delete Dialog -->
+    <div class="modal-overlay" id="confirmOverlay" style="z-index: 2000;">
+        <div class="confirm-dialog">
+            <div class="confirm-icon">😢</div>
+            <h3>Excluir pet?</h3>
+            <p>Tem certeza que deseja excluir <strong id="confirmPetName"></strong>?</p>
+            <div class="confirm-actions">
+                <button class="btn-secondary" onclick="cancelDelete()">Cancelar</button>
+                <button class="btn-danger" onclick="confirmDelete()">
+                    <span>🗑️</span> Sim, excluir
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
